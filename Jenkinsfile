@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello-1') {
+        stage('Hello-1a') {
             steps {
                 sh '''
                 ls
@@ -11,7 +11,7 @@ pipeline {
             }
         }
 
-        stage('Hello-2') {
+        stage('Hello-2b') {
             steps {
                 sh '''
                 ls
@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Hello-3') {
+        stage('Hello-3c') {
             steps {
                 sh '''
                 ls
