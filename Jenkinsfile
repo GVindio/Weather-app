@@ -12,7 +12,7 @@ pipeline {
         }
     }
 
-        stages {
+        
         stage('Hello-2') {
             steps {
                 sh '''
@@ -23,7 +23,7 @@ pipeline {
         }
     }
 
-        stages {
+        
         stage('Hello-3') {
             steps {
                 sh '''
@@ -32,7 +32,3 @@ pipeline {
                 '''
             }
         }
-    }
-
-
-}
