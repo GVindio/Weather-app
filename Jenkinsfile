@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        sudo su -
+                        
                         cd auth/src/main
                         go build
                         cd -
