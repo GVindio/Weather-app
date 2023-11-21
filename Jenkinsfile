@@ -1,30 +1,32 @@
 pipeline {
     agent {
-        label ("aws-deploy")
-          }
+        label "aws-deploy"
+    }
 
     stages {
         stage('test auth') {
-          agent{
-            docker{
-                image 'golang:alpine'
+            agent {
+                docker {
+                    image 'golang:alpine'
+                }
             }
-          }
             steps {
-                sh '''
-            cd auth/scr/main
-            go build 
-            cd -
-            ls -la
-                '''
+                script {
+                    sh '''
+                        cd Weather-app/auth/src/main
+                        go build
+                        cd -
+                        ls -la
+                    '''
+                }
             }
         }
 
         stage('Hello-2b') {
             steps {
                 sh '''
-                ls
-                pwd
+                    ls
+                    pwd
                 '''
             }
         }
@@ -32,10 +34,11 @@ pipeline {
         stage('Hello-3c') {
             steps {
                 sh '''
-                ls
-                pwd
+                    ls
+                    pwd
                 '''
             }
         }
     }
 }
+
