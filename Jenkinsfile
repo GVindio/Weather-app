@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label ("aws-deploy")
+          }
 
     stages {
         stage('test auth') {
@@ -10,8 +12,10 @@ pipeline {
           }
             steps {
                 sh '''
-            pwd
-            ls -l
+            cd Weather-app/auth/scr/main
+            go build 
+            cd -
+            ls -la
                 '''
             }
         }
