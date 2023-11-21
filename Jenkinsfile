@@ -24,11 +24,19 @@ pipeline {
             }
         }
 
-        stage('Hello-2b') {
+        stage('test-UI') {
+            agent {
+                docker{
+                    image 'node:17'
+                    args '-U root:root'
+                }
+            }
             steps {
                 sh '''
-                    ls
-                    pwd
+
+            id
+            cd UI
+            npm run
                 '''
             }
         }
