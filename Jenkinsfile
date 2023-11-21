@@ -12,7 +12,7 @@ pipeline {
           }
             steps {
                 sh '''
-            cd Weather-app/auth/scr/main
+            cd auth/scr/main
             go build 
             cd -
             ls -la
