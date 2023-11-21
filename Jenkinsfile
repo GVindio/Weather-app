@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        cd /auth/src/main
+                        cd auth/src/main
                         go build
                         cd -
                         ls -la
