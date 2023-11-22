@@ -32,17 +32,17 @@ pipeline {
         }
       }
 
-      steps {
-        sh '''
-          id
-          cd UI
-          npm run
-        '''
+        steps {
+            sh '''
+        
+        cd UI
+        npm run
+            '''
       }
     }
 
     stage('Hello-3c') {
-      steps {
+        steps {
         sh '''
           ls
           pwd
