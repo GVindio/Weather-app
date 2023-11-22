@@ -3,51 +3,38 @@ pipeline {
     label 'aws-deploy'
   }
 
-  stages {
-    stage('test auth') {
-      agent {
-        docker {
-          image 'golang:alpine'
-          args '-u root'
-        }
-      }
+     stages {
 
-      steps {
-        script {
-          sh '''
+        stage('Test auth') {
+	     agent {
+            docker {
+              image 'golang:alpine'
+              args '-u root:root'
+            }
+           }
+            steps {
+                sh '''
+            id
             cd auth/src/main
-            go build
+            go build 
             cd -
             ls -la
-          '''
+                '''
+            }
         }
-      }
-    }
 
-    stage('test-UI') {
-      agent {
-        docker {
-          image 'node:17'
-          args '-U root:root'
+
+        stage('Test UI') {
+	     agent {
+            docker {
+              image 'node:17'
+              args '-u root:root'
+            }
+           }
+            steps {
+                sh '''
+            cd UI
+            npm run
+                '''
+            }
         }
-      }
-
-        steps {
-            sh '''
-        
-        cd UI
-        npm run
-            '''
-      }
-    }
-
-    stage('Hello-3c') {
-        steps {
-        sh '''
-          ls
-          pwd
-        '''
-      }
-    }
-  }
-}
