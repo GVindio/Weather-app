@@ -61,7 +61,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('SonarQubeScanner') {
+                    withSonarQubeEnv('sonar') {
                         sh '''
                             sonar-scanner \
                             -Dsonar.host.url=http://44.202.12.32:9000 \
