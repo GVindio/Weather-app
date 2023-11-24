@@ -64,8 +64,8 @@ pipeline {
                     withSonarQubeEnv('SonarQubeScanner') {
                         sh '''
                             sonar-scanner \
-                            -Dsonar.host.url=http://54.165.247.157:9000/ \
-                            -Dsonar.login=squ_4d13e8843d63258727c69d45606c94fddab77e1e
+                            -Dsonar.host.url=http://44.202.12.32:9000 \
+                            -Dsonar.login=squ_dad0cd3d32569c17ee8871253e09a05a1077adb2
                         '''
                     }
                 }
