@@ -78,7 +78,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=35f9234a979911dc3387f26bbf4b8aab09f38d3a"
+                    sh "${SCANNER_HOME}/bin/sonar-scanner -X -Dsonar.projectKey=35f9234a979911dc3387f26bbf4b8aab09f38d3a"
                 }
             }
         }
