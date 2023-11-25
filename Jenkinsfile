@@ -9,12 +9,57 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stages {
+
+        stage('Test auth') {
+	     agent {
+            docker {
+              image 'golang:alpine'
+              args '-u root:root'
+            }
+           }
             steps {
-                // Build your project (e.g., Maven, Gradle, etc.)
-                sh 'mvn clean install'
+                sh '''
+            id
+            cd auth/src/main
+            go build 
+            cd -
+            ls -la
+                '''
             }
         }
+
+
+        stage('Test UI') {
+	     agent {
+            docker {
+              image 'node:17'
+              args '-u root:root'
+            }
+           }
+            steps {
+                sh '''
+            cd UI
+            npm run
+                '''
+            }
+        }
+
+        stage('Test weather') {
+	     agent {
+            docker {
+              image 'python:3.8-slim-buster'
+              args '-u root:root'
+            }
+           }
+            steps {
+                sh '''
+            cd weather
+            pip3 install -r requirements.txt
+                '''
+            }
+        }
+
 
         stage('SonarQube analysis') {
             steps {
