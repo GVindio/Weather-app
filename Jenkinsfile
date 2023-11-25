@@ -9,66 +9,69 @@ pipeline {
             }
         }
 
-        stages {
-
         stage('Test auth') {
-	     agent {
-            docker {
-              image 'golang:alpine'
-              args '-u root:root'
+            agent {
+                docker {
+                    image 'golang:alpine'
+                    args '-u root:root'
+                }
             }
-           }
             steps {
-                sh '''
-            id
-            cd auth/src/main
-            go build 
-            cd -
-            ls -la
-                '''
+                script {
+                    sh '''
+                        id
+                        cd auth/src/main
+                        go build
+                        cd -
+                        ls -la
+                    '''
+                }
             }
         }
 
-
         stage('Test UI') {
-	     agent {
-            docker {
-              image 'node:17'
-              args '-u root:root'
+            agent {
+                docker {
+                    image 'node:17'
+                    args '-u root:root'
+                }
             }
-           }
             steps {
-                sh '''
-            cd UI
-            npm run
-                '''
+                script {
+                    sh '''
+                        cd UI
+                        npm install
+                        npm run
+                    '''
+                }
             }
         }
 
         stage('Test weather') {
-	     agent {
-            docker {
-              image 'python:3.8-slim-buster'
-              args '-u root:root'
+            agent {
+                docker {
+                    image 'python:3.8-slim-buster'
+                    args '-u root:root'
+                }
             }
-           }
             steps {
-                sh '''
-            cd weather
-            pip3 install -r requirements.txt
-                '''
+                script {
+                    sh '''
+                        cd weather
+                        pip3 install -r requirements.txt
+                    '''
+                }
             }
         }
 
-
         stage('SonarQube analysis') {
             steps {
-                // Run SonarQube scanner with the necessary parameters
                 withSonarQubeEnv('SonarCloud') {
-                    sh 'sonar-scanner -Dsonar.projectKey=e9b32d2da2f5b630529008c76582d8b49e36d593 -Dsonar.organization=gvindio -Dsonar.sources=src'
+                    script {
+                        sh 'sonar-scanner -Dsonar.projectKey=e9b32d2da2f5b630529008c76582d8b49e36d593 -Dsonar.organization=gvindio -Dsonar.sources=src'
+                    }
                 }
             }
         }
     }
-}
 }
