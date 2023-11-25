@@ -19,13 +19,15 @@ pipeline {
         }
       }
       steps {
-        sh '''
-          id
-          cd auth/src/main
-          go build
-          cd -
-          ls -la
-        '''
+        script {
+          sh '''
+            id
+            cd auth/src/main
+            go build
+            cd -
+            ls -la
+          '''
+        }
       }
     }
 
@@ -37,10 +39,13 @@ pipeline {
         }
       }
       steps {
-        sh '''
-          cd UI
-          npm run
-        '''
+        script {
+          sh '''
+            cd UI
+            npm install
+            npm run
+          '''
+        }
       }
     }
 
@@ -52,21 +57,25 @@ pipeline {
         }
       }
       steps {
-        sh '''
-          cd weather
-          pip3 install -r requirements.txt
-        '''
+        script {
+          sh '''
+            cd weather
+            pip3 install -r requirements.txt
+          '''
+        }
       }
     }
 
-        stage('SonarQube analysis') {
-            steps {
-                withSonarQubeEnv('SonarCloud') {
-                    script {
-                        sh 'sonar-scanner -Dsonar.projectKey=e9b32d2da2f5b630529008c76582d8b49e36d593 -Dsonar.organization=gvindio -Dsonar.sources=src'
-                    }
-                }
-            }
+    stage('SonarQube analysis') {
+      agent any
+      steps {
+        withSonarQubeEnv('SonarCloud') {
+          script {
+            sh 'sonar-scanner -Dsonar.projectKey=e9b32d2da2f5b630529008c76582d8b49e36d593 -Dsonar.organization=gvindio -Dsonar.sources=src'
+          }
         }
+      }
     }
+  }
 }
+
