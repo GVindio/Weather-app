@@ -11,24 +11,24 @@ pipeline {
   }
 
   stages {
-    stage('Prepare') {
-      agent {
-        label 'aws-deploy' // Replace 'your-dynamic-label' with the label for the dynamic agents
-      }
-      steps {
-        script {
-          // Download and install SonarScanner
-          sh '''
-            sudo apt update
-            sudo apt install default-jre -y
-            sudo mkdir /opt/sonar-scanner
-            cd /opt/sonar-scanner
-            sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-            sudo unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-          '''
-        }
-      }
-    }
+    // stage('Prepare') {
+    //   agent {
+    //     label 'aws-deploy' // Replace 'your-dynamic-label' with the label for the dynamic agents
+    //   }
+    //   steps {
+    //     script {
+    //       // Download and install SonarScanner
+    //       sh '''
+    //         sudo apt update
+    //         sudo apt install default-jre -y
+    //         sudo mkdir /opt/sonar-scanner
+    //         cd /opt/sonar-scanner
+    //         sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+    //         sudo unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+    //       '''
+    //     }
+    //   }
+    // }
 
     stage('Test auth') {
       agent {
