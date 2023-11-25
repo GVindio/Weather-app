@@ -1,83 +1,28 @@
 pipeline {
-    agent {
-        label 'aws-deploy'
-    }
-  
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
-        disableConcurrentBuilds()
-        timeout(time: 60, unit: 'MINUTES')
-        timestamps()
-    }
+    agent any
 
     stages {
-        stage('Test auth') {
-            agent {
-                docker {
-                    image 'golang:alpine'
-                    args '-u root:root'
-                }
-            }
+        stage('Checkout') {
             steps {
-                sh '''
-                    cd auth/src/main
-                    go build
-                    cd -
-                    ls -la
-                '''
+                // Checkout your repository from version control
+                git 'https://github.com/GVindio/Weather-app.git'
             }
         }
 
-        stage('Test UI') {
-            agent {
-                docker {
-                    image 'node:17'
-                    args '-u root:root'
-                }
-            }
+        stage('Build') {
             steps {
-                sh '''
-                    cd UI
-                    npm run
-                '''
+                // Build your project (e.g., Maven, Gradle, etc.)
+                sh 'mvn clean install'
             }
         }
 
-        stage('Test Weather') {
-            agent {
-                docker {
-                    image 'python:3.8-slim-buster'
-                    args '-u root:root'
+        stage('SonarQube analysis') {
+            steps {
+                // Run SonarQube scanner with the necessary parameters
+                withSonarQubeEnv('SonarCloud') {
+                    sh 'sonar-scanner -Dsonar.projectKey=e9b32d2da2f5b630529008c76582d8b49e36d593 -Dsonar.organization=gvindio -Dsonar.sources=src'
                 }
             }
-            steps {
-                sh '''
-                    cd weather
-                    pip3 install -r requirements.txt
-                '''
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    withSonarQubeEnv('sonar') {
-                        sh '''
-                            sonar-scanner \
-                            -Dsonar.host.url=http://44.202.12.32:9000 \
-                            -Dsonar.login=squ_dad0cd3d32569c17ee8871253e09a05a1077adb2
-                        '''
-                    }
-                }
-            }
-        }
-    }
-
-
-    post {
-        always {
-            // Additional post-build actions or clean-up steps
-            echo 'Always executing post-build actions...'
         }
     }
 }
