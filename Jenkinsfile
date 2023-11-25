@@ -11,24 +11,7 @@ pipeline {
   }
 
   stages {
-    // stage('Prepare') {
-    //   agent {
-    //     label 'aws-deploy' // Replace 'your-dynamic-label' with the label for the dynamic agents
-    //   }
-    //   steps {
-    //     script {
-    //       // Download and install SonarScanner
-    //       sh '''
-    //         sudo apt update
-    //         sudo apt install default-jre -y
-    //         sudo mkdir /opt/sonar-scanner
-    //         cd /opt/sonar-scanner
-    //         sudo wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-    //         sudo unzip sonar-scanner-cli-4.6.2.2472-linux.zip
-    //       '''
-    //     }
-    //   }
-    // }
+    
 
     stage('Test auth') {
       agent {
@@ -86,14 +69,21 @@ pipeline {
     }
 
     stage('SonarQube analysis') {
-      agent any
-      steps {
-        withSonarQubeEnv('SonarCloud') {
-          script {
-            sh 'sonar-scanner -Dsonar.projectKey=e9b32d2da2f5b630529008c76582d8b49e36d593 -Dsonar.organization=gvindio -Dsonar.sources=src'
-          }
-        }
-      }
+            agent {
+                docker {
+                  image 'sonarsource/sonar-scanner-cli:4.7.0'
+                }
+               }
+               environment {
+        CI = 'true'
+        //  scannerHome = tool 'Sonar'
+        scannerHome='/opt/sonar-scanner'
     }
+            steps{
+                withSonarQubeEnv('Sonar') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
   }
-}
+  }
